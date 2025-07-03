@@ -31,15 +31,15 @@ return [
          * Notes regarding fonts:
          * Additional .afm font metrics can be added by executing load_font.php from command line.
          *
-         * Only the original "Base 14 fonts" are present on all pdf viewers. Additional fonts must
-         * be embedded in the pdf file or the PDF may not display correctly. This can significantly
+         * Only the original "Base 14 fonts" are present on all export viewers. Additional fonts must
+         * be embedded in the export file or the PDF may not display correctly. This can significantly
          * increase file size unless font subsetting is enabled. Before embedding a font please
          * review your rights under the font license.
          *
          * Any font specification in the source HTML is translated to the closest font available
          * in the font directory.
          *
-         * The pdf standard "Base 14 fonts" are:
+         * The export standard "Base 14 fonts" are:
          * Courier, Courier-Bold, Courier-BoldOblique, Courier-Oblique,
          * Helvetica, Helvetica-Bold, Helvetica-BoldOblique, Helvetica-Oblique,
          * Times-Roman, Times-Bold, Times-BoldItalic, Times-Italic,
@@ -125,7 +125,7 @@ return [
          * capabilities for dompdf, however additional features (e.g. object,
          * image and font support, etc.) differ between backends.  Please see
          * {@link PDFLib_Adapter} for more information on the PDFLib backend
-         * and {@link CPDF_Adapter} and lib/class.pdf.php for more information
+         * and {@link CPDF_Adapter} and lib/class.export.php for more information
          * on CPDF. Also see the documentation for each backend at the links
          * below.
          *
@@ -143,12 +143,12 @@ return [
         'pdf_backend' => 'CPDF',
 
         /**
-         * html target media view which should be rendered into pdf.
+         * html target media view which should be rendered into export.
          * List of types and parsing rules for future extensions:
          * http://www.w3.org/TR/REC-html40/types.html
          *   screen, tty, tv, projection, handheld, print, braille, aural, all
          * Note: aural is deprecated in CSS 2.1 because it is replaced by speech in CSS 3.
-         * Note, even though the generated pdf file is intended for print output,
+         * Note, even though the generated export file is intended for print output,
          * the desired content might be different (e.g. screen or projection view of html file).
          * Therefore allow specification of content here.
          */
@@ -198,7 +198,7 @@ return [
          * This adjusts the relative sizes to be similar to the rendering of the
          * html page in a reference browser.
          *
-         * In pdf, always 1 pt = 1/72 inch
+         * In export, always 1 pt = 1/72 inch
          *
          * Rendering resolution of various browsers in px per inch:
          * Windows Firefox and Internet Explorer:

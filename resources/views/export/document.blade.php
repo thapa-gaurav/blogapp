@@ -59,10 +59,10 @@
 <table class="table table-bordered">
     <thead>
     <tr>
-        <td class="text-center"><b>SN no</b></td>
-        <td><b>Caption</b></td>
-        <td><b>Text</b></td>
-        <td class="text-center"><b>Image</b></td>
+        <th class="text-center"><b>SN no</b></th>
+        <th><b>Caption</b></th>
+        <th><b>Text</b></th>
+        <th class="text-center"><b>Image</b></th>
     </tr>
     </thead>
     <tbody>

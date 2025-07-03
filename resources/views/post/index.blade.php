@@ -61,11 +61,14 @@
  <section class="content">
         <!-- Main content -->
         <section class="content">
-            <a href="{{route('pdf-download')}}" class="btn btn-sm btn-danger">
+            <a href="{{route('export-pdf')}}" class="btn btn-sm btn-danger">
                 <i class="fas fa-file-pdf"></i> Export as PDF
             </a>
-            <a href="{{ route('pdf-download', $posts) }}" class="btn btn-sm btn-secondary">
+            <a href="{{ route('export-excel') }}" class="btn btn-sm btn-secondary">
                 <i class="fas fa-file-excel"></i> Export as Excel
+            </a>
+            <a href="{{ route('export-csv') }}" class="btn btn-sm btn-primary">
+                <i class="fas fa-file-csv"></i> Export as Csv
             </a>
             <!-- Default box -->
             <div class="card">

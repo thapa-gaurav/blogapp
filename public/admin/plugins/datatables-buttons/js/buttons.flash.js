@@ -1389,10 +1389,10 @@ DataTable.ext.buttons.excelFlash = $.extend( {}, flashButton, {
 
 // PDF export
 DataTable.ext.buttons.pdfFlash = $.extend( {}, flashButton, {
-	className: 'buttons-pdf buttons-flash',
+	className: 'buttons-export buttons-flash',
 
 	text: function ( dt ) {
-		return dt.i18n( 'buttons.pdf', 'PDF' );
+		return dt.i18n( 'buttons.export', 'PDF' );
 	},
 
 	action: function ( e, dt, button, config ) {
@@ -1425,7 +1425,7 @@ DataTable.ext.buttons.pdfFlash = $.extend( {}, flashButton, {
 		this.processing( false );
 	},
 
-	extension: '.pdf',
+	extension: '.export',
 
 	orientation: 'portrait',
 

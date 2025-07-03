@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\PostExport;
 use App\Models\Comment;
 use App\Models\Like;
 use App\Models\Post;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PostController extends Controller
 {
@@ -100,5 +103,19 @@ class PostController extends Controller
         return view('post.index', compact('posts'));
     }
 
+    public function exportExcel(){
+        return Excel::download(new PostExport, 'post.xlsx');
+    }
+
+    public function exportPdf(){
+        $posts = Post::get();
+        $pdf = Pdf::loadView('export.document',compact('posts'));
+        return $pdf->download('test.file');
+    }
+
+    public function  exportCsv()
+    {
+        return Excel::download(new PostExport, 'post.csv');
+    }
 
 }

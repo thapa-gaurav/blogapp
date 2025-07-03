@@ -47,8 +47,11 @@ Route::get('/user/commented/{user}', [UserController::class, 'showCommentedPosts
 Route::get('/password/edit', [PasswordController::class, 'edit'])->name('password-edit');
 Route::patch('/password/update', [PasswordController::class, 'update'])->middleware(['auth'])->name('password-update');
 
-//pdf
-Route::get('/downloadPdf',[PDFController::class,'download'])->name('pdf-download');
+//export
+Route::get('/downloadPdf',[PostController::class,'exportPdf'])->name('export-pdf');
+Route::get('/downloadExcel',[PostController::class,'exportExcel'])->name('export-excel');
+Route::get('/downloadCsv',[PostController::class,'exportCsv'])->name('export-csv');
+
 
 
 
