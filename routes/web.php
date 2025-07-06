@@ -20,9 +20,9 @@ Route::post('/posts', [PostController::class, 'store'])->name('post-store');
 Route::get('/posts', [PostController::class, 'index'])->name('post-index');
 Route::get('/posts/search', [PostController::class, 'search']) ->name('post-search');
 Route::get('/posts/{post}', [PostController::class, 'show']) ->name('post-show');
-Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('post-destroy')->middleware(['auth'])->can('edit-post', 'post');
-Route::get('/posts/{post}/edit', [PostController::class, 'edit'])->name('post-edit')->middleware(['auth'])->can('edit-post', 'post');
-Route::patch('/posts/{post}', [PostController::class, 'update'])->name('post-update')->middleware(['auth'])->can('edit-post', 'post');
+Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('post-destroy')->middleware(['auth'])->can('delete', 'post');
+Route::get('/posts/{post}/edit', [PostController::class, 'edit'])->name('post-edit')->middleware(['auth'])->can('update', 'post');
+Route::patch('/posts/{post}', [PostController::class, 'update'])->name('post-update')->middleware(['auth'])->can('update', 'post');
 
 //Route::get('/likes/{post}',[LikeController::class,'index']) ;
 Route::post('likes/{post}', [LikeController::class, 'store'])->name('like-store')->middleware('auth');
