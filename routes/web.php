@@ -3,10 +3,10 @@
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PasswordController;
-use App\Http\Controllers\PDFController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RegisteredUserController;
 use App\Http\Controllers\SessionController;
+use App\Http\Controllers\StatController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -51,6 +51,9 @@ Route::patch('/password/update', [PasswordController::class, 'update'])->middlew
 Route::get('/downloadPdf',[PostController::class,'exportPdf'])->name('export-pdf');
 Route::get('/downloadExcel',[PostController::class,'exportExcel'])->name('export-excel');
 Route::get('/downloadCsv',[PostController::class,'exportCsv'])->name('export-csv');
+
+//admin
+Route::get('/admin-dashboard',[StatController::class,'index'])->name("admin-index")->middleware(['auth'])->can('view-dashboard');
 
 
 
