@@ -26,5 +26,8 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('edit-post',function(User $user,Post $post){
            return $post->user->is($user);
         });
+        Gate::define('view-dashboard',function (User $user){
+            return $user->is_admin;
+        });
     }
 }
