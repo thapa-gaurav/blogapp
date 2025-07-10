@@ -9,6 +9,7 @@
             <ul class="list-group list-group-flush">
                 <li class="list-group-item">Created by: {{$post->user->username}}</li>
                 <li class="list-group-item">Likes: {{$post->like_count}}</li>
+                <li class="list-group-item">Price: {{$post->price}}</li>
             </ul>
             <div class="card-body">
                 <div class="row mx-1 justify-content-between">
@@ -19,7 +20,12 @@
                         @method('delete')
                         <button class=" deleteButton btn btn-danger">Delete</button>
                     </form>
+                    <form action="{{route('esewa',$post)}}" method="post">
+                        @csrf
+                        <button class="btn btn-danger">Pay</button>
+                    </form>
                 </div>
+
             </div>
         </div>
     </div>

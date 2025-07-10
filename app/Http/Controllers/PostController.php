@@ -45,7 +45,8 @@ class PostController extends Controller
         $request->validate([
             'caption' => ['required'],
             'post_text' => ['required'],
-            'post_image' => ['required', 'image', 'mimes:jpg,png,jpeg']
+            'post_image' => ['required', 'image', 'mimes:jpg,png,jpeg'],
+            'price' => ['required']
         ]);
 
         $imageName = $request->file('post_image')->store('images', 'public');
@@ -54,6 +55,7 @@ class PostController extends Controller
             'post_text' => $request->post_text,
             'post_image' => $imageName,
             'user_id' => Auth::id(),
+            'price' => $request->price
         ]);
         return redirect()->route('post-index');
     }
@@ -76,7 +78,8 @@ class PostController extends Controller
         $request->validate([
             'caption' => ['required'],
             'post_text' => ['required'],
-            'post_image' => ['required', 'image', 'mimes:jpg,png,jpeg']
+            'post_image' => ['required', 'image', 'mimes:jpg,png,jpeg'],
+            'price' => ['required']
         ]);
         $previousImagePath = $post->post_image;
         $imageName = $request->hasFile('post_image') ?
@@ -86,6 +89,8 @@ class PostController extends Controller
             'caption' => request('caption'),
             'post_text' => request('post_text'),
             'post_image' => $imageName,
+            'price' => $request->price
+
         ]);
         Storage::disk('public')->delete($previousImagePath);
         return redirect()->route('post-index');
@@ -103,17 +108,19 @@ class PostController extends Controller
         return view('post.index', compact('posts'));
     }
 
-    public function exportExcel(){
+    public function exportExcel()
+    {
         return Excel::download(new PostExport, 'post.xlsx');
     }
 
-    public function exportPdf(){
+    public function exportPdf()
+    {
         $posts = Post::get();
-        $pdf = Pdf::loadView('export.document',compact('posts'));
+        $pdf = Pdf::loadView('export.document', compact('posts'));
         return $pdf->download('test.file');
     }
 
-    public function  exportCsv()
+    public function exportCsv()
     {
         return Excel::download(new PostExport, 'post.csv');
     }

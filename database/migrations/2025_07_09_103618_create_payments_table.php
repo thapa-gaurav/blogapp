@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('posts', function (Blueprint $table) {
+        Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(\App\Models\User::class);
-            $table->string('caption');
-            $table->string('post_text');
-            $table->string('post_image')->nullable();
-            $table->float('price');
+            $table->string('username');
+            $table->string('user_id');
+            $table->string('productid');
+            $table->string('price');
+            $table->string('status');
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('posts');
+        Schema::dropIfExists('payments');
     }
 };

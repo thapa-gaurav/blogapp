@@ -26,6 +26,12 @@
                     <x-form-error name="post_image"></x-form-error>
                 </div>
 
+                <div class="mb-3">
+                    <x-form-label for="price">Price</x-form-label>
+                    <x-form-input type="number" name="price"/>
+                    <x-form-error name="price"></x-form-error>
+                </div>
+
                 <x-form-button type="submit">Submit</x-form-button>
             </form>
         </div>

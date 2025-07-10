@@ -6,9 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
-    protected $guarded = [];
     protected $table = 'posts';
-    protected $fillable = ['caption', 'post_text', 'post_image', 'user_id',];
+    protected $fillable = ['caption', 'post_text', 'post_image', 'user_id','price'];
     public function like()
     {
         return $this->hasMany(Like::class);

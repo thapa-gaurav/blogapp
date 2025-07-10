@@ -3,6 +3,7 @@
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PasswordController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RegisteredUserController;
 use App\Http\Controllers\SessionController;
@@ -54,6 +55,12 @@ Route::get('/downloadCsv',[PostController::class,'exportCsv'])->name('export-csv
 
 //admin
 Route::get('/admin-dashboard',[StatController::class,'index'])->name("admin-index")->middleware(['auth'])->can('view-dashboard');
+
+//payment
+Route::get('/esewa-payment/success',[PaymentController::class,'success'])->name('success')->middleware(['auth']);
+Route::get('/esewa-payment/failure',[PaymentController::class,'failure'])->name('failure')->middleware(['auth']);
+Route::post('/esewa-payment/{post}',[PaymentController::class,'payment'])->name('esewa')->middleware(['auth']);
+
 
 
 
