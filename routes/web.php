@@ -59,7 +59,7 @@ Route::get('/admin-dashboard',[StatController::class,'index'])->name("admin-inde
 //payment
 Route::get('/esewa-payment/success',[PaymentController::class,'success'])->name('success')->middleware(['auth']);
 Route::get('/esewa-payment/failure',[PaymentController::class,'failure'])->name('failure')->middleware(['auth']);
-Route::post('/esewa-payment/{post}',[PaymentController::class,'payment'])->name('esewa')->middleware(['auth']);
+Route::post('/esewa-payment/{post}',[PaymentController::class,'paymentProcess'])->name('esewa')->middleware(['auth']);
 
 
 
