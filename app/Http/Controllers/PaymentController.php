@@ -7,6 +7,7 @@ use App\Models\Payment;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use RemoteMerge\Esewa\Client;
 
 class PaymentController extends Controller
@@ -40,7 +41,7 @@ class PaymentController extends Controller
 
     public function generateForm($fields)
     {
-        $apiUrl = env('ESEWA_API_URI');
+        $apiUrl = config('app.esewa');
         $htmlForm = '<form action="' . $apiUrl . '" method="POST"' . 'id="esewa-form">';
         foreach ($fields as $name => $value) {
             $htmlForm .= sprintf('<input id="%s" type="text" name="%s" value="%s" required>', $name, $name, $value);
@@ -52,10 +53,25 @@ class PaymentController extends Controller
     public function success()
     {
         $decodedData = json_decode(base64_decode($_GET['data']));
-        $payment = Payment::where('productid', $decodedData->transaction_uuid)->first();
-        $payment->status = $decodedData->status;
-        $payment->save();
-        return redirect("https://developer.esewa.com.np/success");
+
+
+        $statusCheck = json_decode(Http::get(config('app.esewaStatus'), [
+            'product_code' => "EPAYTEST",
+            'total_amount' => $decodedData->total_amount,
+            'transaction_uuid' => $decodedData->transaction_uuid,
+        ]));
+        if ($statusCheck->status=='COMPLETE'){
+            $payment = Payment::where('productid', $decodedData->transaction_uuid)->first();
+
+            $payment->status = $statusCheck->status;
+            $payment->save();
+
+            return redirect("https://developer.esewa.com.np/success");
+        }
+        else return redirect("https://developer.esewa.com.np/failure");
+
+
+
     }
 
     public function failure()

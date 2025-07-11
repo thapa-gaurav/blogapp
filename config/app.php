@@ -123,5 +123,7 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    'esewa'=> env('ESEWA_API_URI'),
+    'esewaStatus' =>env('ESEWA_STATUS_API'),
 
 ];
