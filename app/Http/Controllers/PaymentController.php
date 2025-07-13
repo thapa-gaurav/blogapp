@@ -54,22 +54,22 @@ class PaymentController extends Controller
     {
         $decodedData = json_decode(base64_decode($_GET['data']));
 
-
         $statusCheck = json_decode(Http::get(config('app.esewaStatus'), [
             'product_code' => "EPAYTEST",
             'total_amount' => $decodedData->total_amount,
             'transaction_uuid' => $decodedData->transaction_uuid,
         ]));
-        if ($statusCheck->status=='COMPLETE'){
+        if ($statusCheck->status == 'COMPLETE') {
             $payment = Payment::where('productid', $decodedData->transaction_uuid)->first();
-
-            $payment->status = $statusCheck->status;
-            $payment->save();
+            
+            $payment->update([
+                'status'=> 'COMPLETE',
+                'form_data' => $decodedData,
+                'status_data' => $statusCheck,
+            ]);
 
             return redirect("https://developer.esewa.com.np/success");
-        }
-        else return redirect("https://developer.esewa.com.np/failure");
-
+        } else return redirect("https://developer.esewa.com.np/failure");
 
 
     }

@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('productid');
             $table->string('price');
             $table->string('status');
+            $table->json('form_data')->nullable();
+            $table->json('status_data')->nullable();
             $table->timestamps();
         });
     }
