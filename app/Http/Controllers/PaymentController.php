@@ -61,7 +61,7 @@ class PaymentController extends Controller
         ]));
         if ($statusCheck->status == 'COMPLETE') {
             $payment = Payment::where('productid', $decodedData->transaction_uuid)->first();
-            
+
             $payment->update([
                 'status'=> 'COMPLETE',
                 'form_data' => $decodedData,

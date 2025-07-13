@@ -20,7 +20,7 @@ class PostController extends Controller
             ->with(['user', 'like.user:id,username', 'comment.user:id,username'])
             ->latest()
             ->simplePaginate(3);
-        return view('post.index', compact('posts'));
+        return response()->json($posts);
     }
 
     public function show($postID)
@@ -28,7 +28,7 @@ class PostController extends Controller
         $post = Post::withcount(['like', 'comment'])
             ->with(['like.user:id,username', 'comment.user:id,username', 'user'])
             ->findOrFail($postID);
-        return view('post.show', compact('post'));
+        return response()->json($post);
     }
 
     public function create()
@@ -60,12 +60,13 @@ class PostController extends Controller
         return redirect()->route('post-index');
     }
 
-    public function destroy(Post $post)
+    public function destroy(Post $postID)
     {
+        $post = Post::findOrFail($postID);
         $imagePath = $post->post_image;
         Storage::disk('public')->delete($imagePath);
         $post->delete();
-        return redirect()->route('post-index');
+        return response()->json("SuccessFully Deleted", 204);
     }
 
     public function edit(Post $post)
