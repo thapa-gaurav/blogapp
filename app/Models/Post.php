@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @method static findOrFail(Post $postID)
+ */
 class Post extends Model
 {
     protected $table = 'posts';

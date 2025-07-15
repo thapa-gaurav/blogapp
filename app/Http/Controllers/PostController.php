@@ -62,7 +62,7 @@ class PostController extends Controller
 
     }
 
-    public function destroy(Post $postID)
+    public function destroy($postID)
     {
         $post = Post::findOrFail($postID);
         $imagePath = $post->post_image;
@@ -76,28 +76,33 @@ class PostController extends Controller
         return view('post.edit', compact('post'));
     }
 
-    public function update(Post $postID, Request $request)
+    public function update($postID, Request $request)
     {
-        $post = Post::findOrFail($postID);
+        
         $request->validate([
             'caption' => ['required'],
             'post_text' => ['required'],
             'post_image' => ['required', 'image', 'mimes:jpg,png,jpeg'],
             'price' => ['required']
         ]);
+        $post = Post::findOrFail($postID);
         $previousImagePath = $post->post_image;
         $imageName = $request->hasFile('post_image') ?
             $request->file('post_image')->store('images', 'public') : null;
 
         $post->update([
-            'caption' => request('caption'),
-            'post_text' => request('post_text'),
+            'caption' => $request->caption,
+            'post_text' => $request->post_text,
             'post_image' => $imageName,
             'price' => $request->price
 
         ]);
         Storage::disk('public')->delete($previousImagePath);
-        return $post;
+        return response()->json([
+            'success' => true,
+            'message' => 'Update successful',
+            'data' => $post
+        ]);
     }
 
     public function search(Request $request)
