@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Exports\PostExport;
+use App\Http\Resources\UserCollection;
+use App\Http\Resources\UserResource;
 use App\Models\Comment;
 use App\Models\Like;
 use App\Models\Post;
@@ -16,17 +18,19 @@ class PostController extends Controller
 {
     public function index()
     {
-        return Post::withcount(['like', 'comment'])
+        $posts = Post::withcount(['like', 'comment'])
             ->with(['user', 'like.user:id,username', 'comment.user:id,username'])
             ->latest()
             ->simplePaginate(3);
+        return new UserCollection($posts);
     }
 
     public function show($postID)
     {
-        return Post::withcount(['like', 'comment'])
+        $post = Post::withcount(['like', 'comment'])
             ->with(['like.user:id,username', 'comment.user:id,username', 'user'])
             ->findOrFail($postID);
+        return new UserResource($post);
     }
 
     public function create()
@@ -43,16 +47,16 @@ class PostController extends Controller
         $request->validate([
             'caption' => ['required'],
             'post_text' => ['required'],
-//            'post_image' => ['required', 'image', 'mimes:jpg,png,jpeg'],
+            'post_image' => ['required', 'image', 'mimes:jpg,png,jpeg'],
             'price' => ['required']
         ]);
 
-//        $imageName = $request->file('post_image')->store('images', 'public');
+        $imageName = $request->file('post_image')->store('images', 'public');
         return Post::create([
             'caption' => $request->caption,
             'post_text' => $request->post_text,
-//            'post_image' => $imageName,
-            'user_id' => rand(1,1000000),
+            'post_image' => $imageName,
+            'user_id' => rand(1, 1000000),
             'price' => $request->price
         ]);
 
@@ -61,9 +65,9 @@ class PostController extends Controller
     public function destroy(Post $postID)
     {
         $post = Post::findOrFail($postID);
-//        $imagePath = $post->post_image;
-//        Storage::disk('public')->delete($imagePath);
-//        $post->delete();
+        $imagePath = $post->post_image;
+        Storage::disk('public')->delete($imagePath);
+        $post->delete();
         return response()->json("Deletion Success");
     }
 
@@ -72,26 +76,27 @@ class PostController extends Controller
         return view('post.edit', compact('post'));
     }
 
-    public function update(Post $post, Request $request)
+    public function update(Post $postID, Request $request)
     {
+        $post = Post::findOrFail($postID);
         $request->validate([
             'caption' => ['required'],
             'post_text' => ['required'],
-//            'post_image' => ['required', 'image', 'mimes:jpg,png,jpeg'],
+            'post_image' => ['required', 'image', 'mimes:jpg,png,jpeg'],
             'price' => ['required']
         ]);
-//        $previousImagePath = $post->post_image;
-//        $imageName = $request->hasFile('post_image') ?
-//            $request->file('post_image')->store('images', 'public') : null;
+        $previousImagePath = $post->post_image;
+        $imageName = $request->hasFile('post_image') ?
+            $request->file('post_image')->store('images', 'public') : null;
 
         $post->update([
             'caption' => request('caption'),
             'post_text' => request('post_text'),
-//            'post_image' => $imageName,
+            'post_image' => $imageName,
             'price' => $request->price
 
         ]);
-//        Storage::disk('public')->delete($previousImagePath);
+        Storage::disk('public')->delete($previousImagePath);
         return $post;
     }
 
