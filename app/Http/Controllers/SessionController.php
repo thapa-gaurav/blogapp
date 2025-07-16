@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -22,18 +23,20 @@ class SessionController extends Controller
         ]);
 
         if (!Auth::attempt($attributes)) {
-            throw ValidationException::withMessages([
-                'username' => 'Incorrect Credentials',
-            ]);
+            return response()->json([
+                "message" => "The provided credentials are incorrect",
+            ], 401);
         }
-        $request->session()->regenerate();
-        return redirect()->route('post-index');
-
+        $user = User::where('username', $request->username)->first();
+        $token = $user->createToken('Token for user ' . $user->username)->plainTextToken;
+        return response()->json(['Token' => $token], 200);
     }
 
-    public function destroy()
+    public function destroy(Request $request)
     {
-        Auth::logout();
-        return redirect()->route('post-index');
+        $request->user()->currentAccessToken()->delete();
+        return response()->json([
+            'message' => 'You have been successfully logged out.'
+        ], 200);
     }
 }
