@@ -19,14 +19,18 @@ class PasswordController extends Controller
             'current_password' => ['required'],
             'new_password' => ['required'],
         ]);
-        if (Hash::check($request->current_password, Auth::user()->getAuthPassword())) {
+        if (Hash::check($request->current_password, $request->user()->getAuthPassword())) {
             $request->user()->fill([
                 'password' => Hash::make($request->new_password),
             ])->save();
         }else{
-            dd('dont match');
+            return response()->json([
+                "message"=>"password not match",
+            ]);
         }
 //        return redirect('/user/'.Auth::user()->id)->with('success','Password Changed');
-        return redirect()->route('user-index',['user'=>Auth::user()->id]);
+        return response()->json([
+            'message'=>"Password changed successfully",
+        ]);
     }
 }
